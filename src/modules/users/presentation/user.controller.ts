@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
-import { UserApplication } from '../application/user.application';
+import { UserApplication, UserInsertResultApplication } from '../application/user.application';
+import { UserFactory, UserResult } from '../domain/user.factory';
 import { UserRepository } from '../domain/user.repository';
 import { UserInfrastructure } from '../infrastructure/user.infrastructure';
 
@@ -19,10 +20,54 @@ class UserController {
 
   constructor() {
     this.getAll = this.getAll.bind(this);
+    this.insert = this.insert.bind(this);
   }
 
-  getAll(request: Request, response: Response) {
-    response.json(userApplication.getAll());
+  async insert(request: Request, response: Response) {
+    const { name, lastname, email, password } = request.body;
+    const userResult: UserResult = UserFactory.create(
+      name,
+      lastname,
+      email,
+      password
+    );
+
+    if (userResult.isErr()) {
+      return response.status(400).json({
+        name: userResult.error.name,
+        message: userResult.error.message,
+      });
+    }
+
+    const userInsertResult: UserInsertResultApplication =
+      await userApplication.insert(userResult.value);
+
+    if (userInsertResult.isErr()) {
+      return response.status(userInsertResult.error.status).json({
+        name: userInsertResult.error.name,
+        message: userInsertResult.error.message,
+      });
+    }
+
+    /*  if (userInserted instanceof Error) {
+      response.status(400).json({ message: userInserted.message });
+      return;
+    } */
+
+    response.status(201).json(userInsertResult.value);
+  }
+
+  async getAll(request: Request, response: Response) {
+    const userResult = await userApplication.getAll();
+
+    if (userResult.isErr()) {
+      return response.status(userResult.error.status).json({
+        name: userResult.error.name,
+        message: userResult.error.message,
+      });
+    }
+
+    response.json(userResult.value);
   }
 }
 

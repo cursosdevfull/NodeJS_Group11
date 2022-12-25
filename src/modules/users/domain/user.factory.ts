@@ -1,22 +1,49 @@
-import { User } from './user';
+import { err, ok, Result } from 'neverthrow';
+import { v4 as uuidv4 } from 'uuid';
+
+import { EmailInvalidException } from './exceptions/domain.exception';
+import { User, UserProperties } from './user';
+import { EmailVO } from './value-objects/email.vo';
+
+export type UserResult = Result<User, EmailInvalidException | Error>;
 
 export class UserFactory {
   static readonly patternEmail =
     /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-  static create(name: string, email: string, password: string): User {
+  static create(
+    name: string,
+    lastname: string,
+    email: string,
+    password: string
+  ): UserResult {
     if (name.length < 3) {
-      throw new Error("Name is too short");
+      return err(new Error("Name is too short"));
     }
 
     if (password.length < 6) {
-      throw new Error("Password is too short");
+      return err(new Error("Password is too short"));
     }
 
-    if (!this.patternEmail.test(email)) {
-      throw new Error("Email is not valid");
+    if (email.trim().length === 0) {
+      return err(new Error("Email is required"));
     }
 
-    return new User(name, email, password);
+    const emailResult = EmailVO.create(email);
+
+    if (emailResult.isErr()) {
+      return err(emailResult.error);
+    }
+
+    const properties: UserProperties = {
+      id: uuidv4(),
+      name,
+      lastname,
+      email: emailResult.value.getValue(),
+      password,
+      roles: [],
+    };
+
+    return ok(new User(properties));
   }
 }

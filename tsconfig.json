@@ -8,7 +8,9 @@
     "moduleResolution": "node",
     "sourceMap": false,
     "baseUrl": "./",
-    "outDir": "./cache"
+    "outDir": "./cache",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": ["node_modules", "cache"],
   "include": ["src/**/*.ts"]

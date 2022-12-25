@@ -1,6 +1,7 @@
+import { UserInsertResult, UserListResult } from '../infrastructure/user.infrastructure';
 import { User } from './user';
 
 export interface UserRepository {
-  insert(user: User): void;
-  getAll(): User[];
+  insert(user: User): Promise<UserInsertResult>;
+  getAll(): Promise<UserListResult>;
 }

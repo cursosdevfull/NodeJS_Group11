@@ -1,10 +1,8 @@
 import { Application } from 'express';
 import http from 'http';
-import yenv from 'yenv';
 
+import { AppService } from '../core/services/app.service';
 import IBootstrap from './bootstrap.interface';
-
-const env = yenv();
 
 export default class implements IBootstrap {
   constructor(private readonly app: Application) {}
@@ -14,10 +12,10 @@ export default class implements IBootstrap {
       const server = http.createServer(this.app);
 
       server
-        .listen(env.PORT)
+        .listen(AppService.PORT)
         .on("listening", () => {
-          console.log(`Server is listening on port ${env.PORT}`);
-          resolve(`Server is listening on port ${env.PORT}`);
+          console.log(`Server is listening on port ${AppService.PORT}`);
+          resolve(`Server is listening on port ${AppService.PORT}`);
         })
         .on("error", (error) => {
           reject(error);
@@ -25,5 +23,9 @@ export default class implements IBootstrap {
           process.exit(1);
         });
     });
+  }
+
+  close(): void {
+    process.exit(1);
   }
 }

@@ -7,7 +7,13 @@ class App {
 
   constructor() {
     this.app = express();
+    this.middlewares();
     this.mountRoutes();
+  }
+
+  middlewares(): void {
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
   }
 
   mountRoutes(): void {
