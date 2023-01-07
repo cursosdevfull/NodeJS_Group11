@@ -4,7 +4,7 @@ export interface UserEssentials {
   readonly lastname: string;
   readonly email: string;
   readonly password: string;
-  readonly roles: string[];
+  readonly roles: number[] | unknown[];
 }
 
 export interface UserOptionals {
@@ -16,13 +16,20 @@ export interface UserOptionals {
 
 export type UserProperties = UserEssentials & Partial<UserOptionals>;
 
+export type UserUpdateProperties = {
+  readonly name: string;
+  readonly lastname: string;
+  password: string;
+  roles: number[] | unknown[];
+};
+
 export class User {
   public readonly id: string;
   public name: string;
   public lastname: string;
   public email: string;
   public password: string;
-  public roles: string[];
+  public roles: number[] | unknown[];
   public active: boolean;
   public readonly createdAt: Date;
   public updatedAt: Date | null;
@@ -49,7 +56,7 @@ export class User {
     };
   }
 
-  update(properties: Partial<UserProperties>): void {
+  update(properties: Partial<UserUpdateProperties>): void {
     Object.assign(this, properties);
     this.updatedAt = new Date();
   }

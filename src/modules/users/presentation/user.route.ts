@@ -15,6 +15,8 @@ class Router {
   mountRoutes(): void {
     this.router.get("/", this.controller.getAll);
     this.router.post("/", this.controller.insert);
+    this.router.get("/:id", this.controller.getOne);
+    this.router.put("/:id", this.controller.update);
   }
 }
 

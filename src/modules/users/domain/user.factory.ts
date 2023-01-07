@@ -15,8 +15,19 @@ export class UserFactory {
     name: string,
     lastname: string,
     email: string,
-    password: string
+    password: string,
+    roles: number[]
   ): UserResult {
+    if (roles.length === 0) {
+      return err(new Error("Roles are required"));
+    }
+
+    for (const role of roles) {
+      if (role < 1) {
+        return err(new Error("Role is invalid"));
+      }
+    }
+
     if (name.length < 3) {
       return err(new Error("Name is too short"));
     }
@@ -41,7 +52,7 @@ export class UserFactory {
       lastname,
       email: emailResult.value.getValue(),
       password,
-      roles: [],
+      roles,
     };
 
     return ok(new User(properties));
