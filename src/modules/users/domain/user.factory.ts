@@ -53,6 +53,7 @@ export class UserFactory {
       email: emailResult.value.getValue(),
       password,
       roles,
+      refreshToken: uuidv4(),
     };
 
     return ok(new User(properties));

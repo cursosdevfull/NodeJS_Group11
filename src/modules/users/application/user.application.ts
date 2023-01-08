@@ -4,23 +4,20 @@ import { RoleRepository } from 'src/modules/roles/domain/role.repository';
 import { User, UserUpdateProperties } from '../domain/user';
 import { UserRepository } from '../domain/user.repository';
 import { UserInsertDto } from './dtos/user-insert.dto';
+import { UserListResultAppPaging } from './results/user-list-paging.result';
 import { UserListResultApp } from './results/user-list.result';
 import { UserOneResultApp } from './results/user-one.result';
 import { CipherService } from './services/cipher.service';
 
 export type UserInsertResultApplication = Result<UserInsertDto, any>;
 export type UserListResultApplication = Result<UserListResultApp[], any>;
+export type UserListResultApplicationPaging = Result<
+  UserListResultAppPaging,
+  any
+>;
 export type UserOneResultApplication = Result<UserOneResultApp, any>;
 export type UserOneResultApplicationWithPassword = Result<User, any>;
 export class UserApplication {
-  /* private repository: UserRepository;
-  private cipherService: CipherService
-
-  constructor(repository: UserRepository, cipherService: CipherService) {
-    this.repository = repository;
-    this.cipherService = cipherService;
-  } */
-
   constructor(
     private readonly repositoryUser: UserRepository,
     private readonly repositoryRole: RoleRepository
@@ -28,6 +25,19 @@ export class UserApplication {
 
   async getAll(): Promise<UserListResultApplication> {
     const listResult = await this.repositoryUser.getAll();
+
+    if (listResult.isErr()) {
+      return err(listResult.error);
+    }
+
+    return ok(listResult.value);
+  }
+
+  async getByPage(
+    page: number,
+    pageSize: number
+  ): Promise<UserListResultApplicationPaging> {
+    const listResult = await this.repositoryUser.getByPage(page, pageSize);
 
     if (listResult.isErr()) {
       return err(listResult.error);
@@ -100,6 +110,18 @@ export class UserApplication {
 
     console.log("properties.roles", properties.roles);
     user.update(properties);
+
+    const userResult = await this.repositoryUser.update(user);
+
+    if (userResult.isErr()) {
+      return err(userResult.error);
+    }
+
+    return ok(UserInsertDto.fromResponseToPresentation(userResult.value));
+  }
+
+  async delete(user: User): Promise<UserInsertResultApplication> {
+    user.delete();
 
     const userResult = await this.repositoryUser.update(user);
 

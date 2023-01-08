@@ -20,6 +20,9 @@ export class UserEntity extends BaseEntity {
   @Column("varchar", { length: 150 })
   password: string;
 
+  @Column("varchar", { length: 100 })
+  refreshToken: string;
+
   @Column("boolean")
   active: boolean;
 

@@ -45,3 +45,15 @@ export class UserOneException extends Error {
     return `An error ocurred while getting the users: ${message}`;
   }
 }
+
+export class UserNotFoundException extends Error {
+  status: number = 404;
+  constructor(message: string) {
+    super(UserNotFoundException.getMessage(message));
+    this.name = "UserNotFoundException";
+  }
+
+  static getMessage(message: string) {
+    return `UserID or Email: ${message} not found`;
+  }
+}

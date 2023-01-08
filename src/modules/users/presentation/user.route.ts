@@ -17,6 +17,8 @@ class Router {
     this.router.post("/", this.controller.insert);
     this.router.get("/:id", this.controller.getOne);
     this.router.put("/:id", this.controller.update);
+    this.router.delete("/:id", this.controller.delete);
+    this.router.get("/page/:page/:pageSize", this.controller.getByPage);
   }
 }
 

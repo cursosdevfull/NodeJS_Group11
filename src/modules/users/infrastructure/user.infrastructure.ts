@@ -1,18 +1,38 @@
 import { err, ok, Result } from 'neverthrow';
 
 import DatabaseBootstrap from '../../../bootstrap/database.bootstrap';
+import { AuthApplicationDto } from '../../auth/application/dtos/auth.dto';
 import { UserInsertResultApp } from '../application/results/user-insert.result';
+import { UserListResultAppPaging } from '../application/results/user-list-paging.result';
 import { UserListResultApp } from '../application/results/user-list.result';
 import { UserOneResultApp } from '../application/results/user-one.result';
 import { User } from '../domain/user';
 import { UserRepository } from '../domain/user.repository';
 import { UserModelDto } from './dtos/user-models.dto';
 import { UserEntity } from './entities/user.entity';
-import { UserInsertException, UserListException, UserOneException, UserUpdateException } from './exceptions/user.exception';
+import {
+  UserInsertException,
+  UserListException,
+  UserNotFoundException,
+  UserOneException,
+  UserUpdateException,
+} from './exceptions/user.exception';
+
 
 export type UserInsertResult = Result<UserInsertResultApp, UserInsertException>;
 export type UserListResult = Result<UserListResultApp[], UserListException>;
-export type UserOneResult = Result<UserOneResultApp, UserListException>;
+export type UserListResultPaging = Result<
+  UserListResultAppPaging,
+  UserListException
+>;
+export type UserOneResult = Result<
+  UserOneResultApp,
+  UserListException | UserNotFoundException
+>;
+export type UserByEmailResult = Result<
+  AuthApplicationDto,
+  UserOneException | UserNotFoundException
+>;
 export type UserOneResultWithPassword = Result<User, UserListException>;
 export class UserInfrastructure implements UserRepository {
   async insert(user: User): Promise<UserInsertResult> {
@@ -59,6 +79,10 @@ export class UserInfrastructure implements UserRepository {
         where: { active: true, id },
       });
 
+      if (!user) {
+        return err(new UserNotFoundException(id));
+      }
+
       console.log(user);
 
       return ok(UserModelDto.fromDataToApplicationOne(user));
@@ -77,6 +101,45 @@ export class UserInfrastructure implements UserRepository {
       console.log(user);
 
       return ok(UserModelDto.fromDataToDomain(user));
+    } catch (error) {
+      return err(new UserOneException(error.message));
+    }
+  }
+
+  async getByPage(
+    page: number,
+    pageSize: number
+  ): Promise<UserListResultPaging> {
+    try {
+      const repository = DatabaseBootstrap.dataSource.getRepository(UserEntity);
+      const [users, count] = await repository.findAndCount({
+        where: { active: true },
+        skip: page * pageSize,
+        take: pageSize,
+      });
+
+      console.log(users);
+
+      return ok(UserModelDto.fromDataToApplicationListPaging(users, count));
+    } catch (error) {
+      return err(new UserListException(error.message));
+    }
+  }
+
+  async getUserByEmail(email: string): Promise<UserByEmailResult> {
+    try {
+      const repository = DatabaseBootstrap.dataSource.getRepository(UserEntity);
+      const user: UserEntity = await repository.findOne({
+        where: { active: true, email },
+      });
+
+      if (!user) {
+        return err(new UserNotFoundException(email));
+      }
+
+      console.log(user);
+
+      return ok(UserModelDto.fromDataToAuth(user));
     } catch (error) {
       return err(new UserOneException(error.message));
     }

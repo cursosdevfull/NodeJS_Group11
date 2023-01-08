@@ -6,6 +6,7 @@ import { UserApplication, UserInsertResultApplication } from '../application/use
 import { UserUpdateProperties } from '../domain/user';
 import { UserFactory, UserResult } from '../domain/user.factory';
 import { UserRepository } from '../domain/user.repository';
+import { IdVO } from '../domain/value-objects/id.vo';
 import { UserInfrastructure } from '../infrastructure/user.infrastructure';
 
 const userInfrastructure: UserRepository = new UserInfrastructure();
@@ -28,6 +29,8 @@ class UserController {
     this.insert = this.insert.bind(this);
     this.getOne = this.getOne.bind(this);
     this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.getByPage = this.getByPage.bind(this);
   }
 
   async insert(request: Request, response: Response) {
@@ -57,11 +60,6 @@ class UserController {
       });
     }
 
-    /*  if (userInserted instanceof Error) {
-      response.status(400).json({ message: userInserted.message });
-      return;
-    } */
-
     response.status(201).json(userInsertResult.value);
   }
 
@@ -78,9 +76,32 @@ class UserController {
     response.json(userResult.value);
   }
 
+  async getByPage(request: Request, response: Response) {
+    const { page, pageSize } = request.params;
+    const userResult = await userApplication.getByPage(+page, +pageSize);
+
+    if (userResult.isErr()) {
+      return response.status(userResult.error.status).json({
+        name: userResult.error.name,
+        message: userResult.error.message,
+      });
+    }
+
+    response.json(userResult.value);
+  }
+
   async getOne(request: Request, response: Response) {
     const { id } = request.params;
-    const userResult = await userApplication.getOne(id);
+    const idResult = IdVO.create(id);
+
+    if (idResult.isErr()) {
+      return response.status(idResult.error.status).json({
+        name: idResult.error.name,
+        message: idResult.error.message,
+      });
+    }
+
+    const userResult = await userApplication.getOne(idResult.value.getValue());
 
     if (userResult.isErr()) {
       return response.status(userResult.error.status).json({
@@ -94,9 +115,19 @@ class UserController {
 
   async update(request: Request, response: Response) {
     const { id } = request.params;
+    const idResult = IdVO.create(id);
+
+    if (idResult.isErr()) {
+      return response.status(idResult.error.status).json({
+        name: idResult.error.name,
+        message: idResult.error.message,
+      });
+    }
     const body: Partial<UserUpdateProperties> = request.body;
 
-    const userGetOneResult = await userApplication.getOneWithPassword(id);
+    const userGetOneResult = await userApplication.getOneWithPassword(
+      idResult.value.getValue()
+    );
 
     if (userGetOneResult.isErr()) {
       return response.status(userGetOneResult.error.status).json({
@@ -118,6 +149,42 @@ class UserController {
     }
 
     response.status(201).json("User updated");
+  }
+
+  async delete(request: Request, response: Response) {
+    const { id } = request.params;
+    const idResult = IdVO.create(id);
+
+    if (idResult.isErr()) {
+      return response.status(idResult.error.status).json({
+        name: idResult.error.name,
+        message: idResult.error.message,
+      });
+    }
+
+    const userGetOneResult = await userApplication.getOneWithPassword(
+      idResult.value.getValue()
+    );
+
+    if (userGetOneResult.isErr()) {
+      return response.status(userGetOneResult.error.status).json({
+        name: userGetOneResult.error.name,
+        message: userGetOneResult.error.message,
+      });
+    }
+
+    const userUpdateResult = await userApplication.delete(
+      userGetOneResult.value
+    );
+
+    if (userUpdateResult.isErr()) {
+      return response.status(userUpdateResult.error.status).json({
+        name: userUpdateResult.error.name,
+        message: userUpdateResult.error.message,
+      });
+    }
+
+    response.status(201).json("User deleted");
   }
 }
 

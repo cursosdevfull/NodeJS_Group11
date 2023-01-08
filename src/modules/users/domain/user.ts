@@ -12,6 +12,7 @@ export interface UserOptionals {
   readonly createdAt: Date;
   readonly updatedAt: Date | null;
   readonly deletedAt: Date | null;
+  readonly refreshToken: string;
 }
 
 export type UserProperties = UserEssentials & Partial<UserOptionals>;
@@ -34,6 +35,7 @@ export class User {
   public readonly createdAt: Date;
   public updatedAt: Date | null;
   public deletedAt: Date | null;
+  public refreshToken: string;
 
   constructor(properties: UserProperties) {
     this.active = true;
@@ -53,6 +55,7 @@ export class User {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
+      refreshToken: this.refreshToken,
     };
   }
 

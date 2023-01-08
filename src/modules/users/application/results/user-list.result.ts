@@ -1,5 +1,5 @@
 export class UserListResultApp {
-  readonly id: string;
-  readonly name: string;
-  readonly lastname: string;
+  id: string;
+  name: string;
+  lastname: string;
 }

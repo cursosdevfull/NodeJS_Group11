@@ -1,5 +1,7 @@
+import { AuthApplicationDto } from '../../../auth/application/dtos/auth.dto';
 import { RoleEntity } from '../../../roles/infrastructure/entities/role.entity';
 import { UserInsertResultApp } from '../../application/results/user-insert.result';
+import { UserListResultAppPaging } from '../../application/results/user-list-paging.result';
 import { UserListResultApp } from '../../application/results/user-list.result';
 import { UserOneResultApp } from '../../application/results/user-one.result';
 import { User, UserProperties } from '../../domain/user';
@@ -21,6 +23,7 @@ export class UserModelDto {
     userEntity.updatedAt = userProperties.updatedAt;
     userEntity.deletedAt = userProperties.deletedAt;
     userEntity.roles = userProperties.roles as RoleEntity[];
+    userEntity.refreshToken = userProperties.refreshToken;
 
     return userEntity;
   }
@@ -44,6 +47,20 @@ export class UserModelDto {
         lastname: user.lastname,
       };
     });
+  }
+
+  static fromDataToApplicationListPaging(
+    userEntity: UserEntity[],
+    count: number
+  ): UserListResultAppPaging {
+    return {
+      data: userEntity.map((user) => ({
+        id: user.id,
+        name: user.name,
+        lastname: user.lastname,
+      })),
+      count,
+    };
   }
 
   static fromDataToApplicationOne(userEntity: UserEntity): UserOneResultApp {
@@ -70,5 +87,13 @@ export class UserModelDto {
       deletedAt: userEntity.deletedAt,
     };
     return new User(properties);
+  }
+
+  static fromDataToAuth(userEntity: UserEntity): AuthApplicationDto {
+    return {
+      name: userEntity.name,
+      lastname: userEntity.lastname,
+      roles: userEntity.roles.map((role) => ({ id: role.id, name: role.name })),
+    };
   }
 }

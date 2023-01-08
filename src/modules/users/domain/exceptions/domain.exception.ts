@@ -10,3 +10,16 @@ export class EmailInvalidException extends Error {
     return `The email is invalid: ${message}`;
   }
 }
+
+export class IdInvalidException extends Error {
+  status: number = 400;
+
+  constructor(message: string) {
+    super(IdInvalidException.getMessage(message));
+    this.name = "IdInvalidException";
+  }
+
+  static getMessage(message: string) {
+    return `The id is invalid: ${message}`;
+  }
+}
