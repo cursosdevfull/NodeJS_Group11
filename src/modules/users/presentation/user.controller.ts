@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { RoleRepository } from 'src/modules/roles/domain/role.repository';
 
+import { Validator } from '../../../core/validators/validator';
 import { RoleInfrastructure } from '../../roles/infrastructure/role.infrastructure';
 import { UserApplication, UserInsertResultApplication } from '../application/user.application';
 import { UserUpdateProperties } from '../domain/user';
@@ -8,6 +9,7 @@ import { UserFactory, UserResult } from '../domain/user.factory';
 import { UserRepository } from '../domain/user.repository';
 import { IdVO } from '../domain/value-objects/id.vo';
 import { UserInfrastructure } from '../infrastructure/user.infrastructure';
+import { UserInsertDto } from './dtos/user-insert.dto';
 
 const userInfrastructure: UserRepository = new UserInfrastructure();
 const roleInfrastructure: RoleRepository = new RoleInfrastructure();
@@ -17,13 +19,6 @@ const userApplication: UserApplication = new UserApplication(
 );
 
 class UserController {
-  mockUsers() {
-    return [
-      { name: "User 1", age: 10 },
-      { name: "User 2", age: 20 },
-    ];
-  }
-
   constructor() {
     this.getAll = this.getAll.bind(this);
     this.insert = this.insert.bind(this);
@@ -34,7 +29,22 @@ class UserController {
   }
 
   async insert(request: Request, response: Response) {
-    const { name, lastname, email, password, roles } = request.body;
+    const { name, lastname, email, password, roles, documentType } =
+      request.body;
+
+    const userInsertDto = new UserInsertDto();
+    userInsertDto.name = name;
+    userInsertDto.lastname = lastname;
+    userInsertDto.email = email;
+    userInsertDto.password = password;
+    userInsertDto.roles = roles;
+    userInsertDto.documentType = documentType;
+
+    const errors = await Validator.use(userInsertDto);
+    if (errors) {
+      return response.status(411).json(errors);
+    }
+
     const userResult: UserResult = UserFactory.create(
       name,
       lastname,

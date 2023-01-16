@@ -1,5 +1,6 @@
 import {
   UserByEmailResult,
+  UserByRefreshTokenResult,
   UserInsertResult,
   UserListResult,
   UserListResultPaging,
@@ -16,4 +17,7 @@ export interface UserRepository {
   update(user: User): Promise<UserInsertResult>;
   getByPage(page: number, pageSize: number): Promise<UserListResultPaging>;
   getUserByEmail(email: string): Promise<UserByEmailResult>;
+  getUserByRefreshToken(
+    refreshToken: string
+  ): Promise<UserByRefreshTokenResult>;
 }

@@ -14,10 +14,10 @@ import {
   UserInsertException,
   UserListException,
   UserNotFoundException,
+  UserNotFoundWithRefreshTokenException,
   UserOneException,
   UserUpdateException,
 } from './exceptions/user.exception';
-
 
 export type UserInsertResult = Result<UserInsertResultApp, UserInsertException>;
 export type UserListResult = Result<UserListResultApp[], UserListException>;
@@ -33,6 +33,11 @@ export type UserByEmailResult = Result<
   AuthApplicationDto,
   UserOneException | UserNotFoundException
 >;
+export type UserByRefreshTokenResult = Result<
+  AuthApplicationDto,
+  UserOneException | UserNotFoundWithRefreshTokenException
+>;
+
 export type UserOneResultWithPassword = Result<User, UserListException>;
 export class UserInfrastructure implements UserRepository {
   async insert(user: User): Promise<UserInsertResult> {
@@ -83,8 +88,6 @@ export class UserInfrastructure implements UserRepository {
         return err(new UserNotFoundException(id));
       }
 
-      console.log(user);
-
       return ok(UserModelDto.fromDataToApplicationOne(user));
     } catch (error) {
       return err(new UserOneException(error.message));
@@ -97,8 +100,6 @@ export class UserInfrastructure implements UserRepository {
       const user: UserEntity = await repository.findOne({
         where: { active: true, id },
       });
-
-      console.log(user);
 
       return ok(UserModelDto.fromDataToDomain(user));
     } catch (error) {
@@ -137,7 +138,24 @@ export class UserInfrastructure implements UserRepository {
         return err(new UserNotFoundException(email));
       }
 
-      console.log(user);
+      return ok(UserModelDto.fromDataToAuth(user));
+    } catch (error) {
+      return err(new UserOneException(error.message));
+    }
+  }
+
+  async getUserByRefreshToken(
+    refreshToken: string
+  ): Promise<UserByRefreshTokenResult> {
+    try {
+      const repository = DatabaseBootstrap.dataSource.getRepository(UserEntity);
+      const user: UserEntity = await repository.findOne({
+        where: { active: true, refreshToken },
+      });
+
+      if (!user) {
+        return err(new UserNotFoundWithRefreshTokenException());
+      }
 
       return ok(UserModelDto.fromDataToAuth(user));
     } catch (error) {

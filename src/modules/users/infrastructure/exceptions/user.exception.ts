@@ -57,3 +57,15 @@ export class UserNotFoundException extends Error {
     return `UserID or Email: ${message} not found`;
   }
 }
+
+export class UserNotFoundWithRefreshTokenException extends Error {
+  status: number = 404;
+  constructor() {
+    super(UserNotFoundWithRefreshTokenException.getMessage());
+    this.name = "UserNotFoundWithRefreshTokenException";
+  }
+
+  static getMessage() {
+    return `User not found with refresh token`;
+  }
+}

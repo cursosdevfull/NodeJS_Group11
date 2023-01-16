@@ -1,3 +1,3 @@
 export interface AuthRepository {
-  //login(email: string, password: string): Promise<AuthLoginResult>;
+  login(email: string, password: string): Promise<AuthLoginResult>;
 }

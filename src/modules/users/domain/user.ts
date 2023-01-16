@@ -22,6 +22,7 @@ export type UserUpdateProperties = {
   readonly lastname: string;
   password: string;
   roles: number[] | unknown[];
+  refreshToken: string;
 };
 
 export class User {

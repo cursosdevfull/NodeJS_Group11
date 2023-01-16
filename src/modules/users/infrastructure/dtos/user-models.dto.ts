@@ -91,9 +91,12 @@ export class UserModelDto {
 
   static fromDataToAuth(userEntity: UserEntity): AuthApplicationDto {
     return {
+      id: userEntity.id,
       name: userEntity.name,
       lastname: userEntity.lastname,
       roles: userEntity.roles.map((role) => ({ id: role.id, name: role.name })),
+      password: userEntity.password,
+      refreshToken: userEntity.refreshToken,
     };
   }
 }
