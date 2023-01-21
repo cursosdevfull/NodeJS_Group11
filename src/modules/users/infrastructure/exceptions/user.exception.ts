@@ -1,8 +1,8 @@
 export class UserInsertException extends Error {
-  status: number = 500;
+  status = 500;
   constructor(message: string) {
     super(UserInsertException.getMessage(message));
-    this.name = "UserInsertException";
+    this.name = 'UserInsertException';
   }
 
   static getMessage(message: string) {
@@ -11,10 +11,10 @@ export class UserInsertException extends Error {
 }
 
 export class UserUpdateException extends Error {
-  status: number = 500;
+  status = 500;
   constructor(message: string) {
     super(UserUpdateException.getMessage(message));
-    this.name = "UserUpdateException";
+    this.name = 'UserUpdateException';
   }
 
   static getMessage(message: string) {
@@ -23,10 +23,10 @@ export class UserUpdateException extends Error {
 }
 
 export class UserListException extends Error {
-  status: number = 500;
+  status = 500;
   constructor(message: string) {
     super(UserListException.getMessage(message));
-    this.name = "UserListException";
+    this.name = 'UserListException';
   }
 
   static getMessage(message: string) {
@@ -35,10 +35,10 @@ export class UserListException extends Error {
 }
 
 export class UserOneException extends Error {
-  status: number = 500;
+  status = 500;
   constructor(message: string) {
     super(UserOneException.getMessage(message));
-    this.name = "UserOneException";
+    this.name = 'UserOneException';
   }
 
   static getMessage(message: string) {
@@ -47,10 +47,10 @@ export class UserOneException extends Error {
 }
 
 export class UserNotFoundException extends Error {
-  status: number = 404;
+  status = 404;
   constructor(message: string) {
     super(UserNotFoundException.getMessage(message));
-    this.name = "UserNotFoundException";
+    this.name = 'UserNotFoundException';
   }
 
   static getMessage(message: string) {
@@ -59,10 +59,10 @@ export class UserNotFoundException extends Error {
 }
 
 export class UserNotFoundWithRefreshTokenException extends Error {
-  status: number = 404;
+  status = 404;
   constructor() {
     super(UserNotFoundWithRefreshTokenException.getMessage());
-    this.name = "UserNotFoundWithRefreshTokenException";
+    this.name = 'UserNotFoundWithRefreshTokenException';
   }
 
   static getMessage() {

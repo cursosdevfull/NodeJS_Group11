@@ -1,7 +1,7 @@
 import { err, ok, Result } from 'neverthrow';
 import { In } from 'typeorm';
 
-import DatabaseBootstrap from '../../../bootstrap/database.bootstrap';
+import DatabaseBootstrap from '../../../bootstrap/DatabaseBootstrap';
 import { RoleRepository } from '../domain/role.repository';
 import { RoleEntity } from './entities/role.entity';
 import { RoleListException } from './exceptions/role.exception';

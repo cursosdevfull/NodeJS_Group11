@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { RoleRepository } from 'src/modules/roles/domain/role.repository';
 
+import RedisBootstrap from '../../../bootstrap/RedisBootstrap';
 import { Validator } from '../../../core/validators/validator';
 import { RoleInfrastructure } from '../../roles/infrastructure/role.infrastructure';
 import { UserApplication, UserInsertResultApplication } from '../application/user.application';
@@ -83,6 +84,10 @@ class UserController {
       });
     }
 
+    RedisBootstrap.set(
+      response.locals.cacheKey,
+      JSON.stringify(userResult.value)
+    );
     response.json(userResult.value);
   }
 
@@ -119,6 +124,11 @@ class UserController {
         message: userResult.error.message,
       });
     }
+
+    RedisBootstrap.set(
+      response.locals.cacheKey,
+      JSON.stringify(userResult.value)
+    );
 
     response.json(userResult.value);
   }
@@ -158,7 +168,7 @@ class UserController {
       });
     }
 
-    response.status(201).json("User updated");
+    response.status(201).json('User updated');
   }
 
   async delete(request: Request, response: Response) {
@@ -194,7 +204,7 @@ class UserController {
       });
     }
 
-    response.status(201).json("User deleted");
+    response.status(201).json('User deleted');
   }
 }
 

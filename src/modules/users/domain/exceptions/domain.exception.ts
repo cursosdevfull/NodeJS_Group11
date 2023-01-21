@@ -1,9 +1,9 @@
 export class EmailInvalidException extends Error {
-  status: number = 400;
+  status = 400;
 
   constructor(message: string) {
     super(EmailInvalidException.getMessage(message));
-    this.name = "EmailInvalidException";
+    this.name = 'EmailInvalidException';
   }
 
   static getMessage(message: string) {
@@ -12,11 +12,11 @@ export class EmailInvalidException extends Error {
 }
 
 export class IdInvalidException extends Error {
-  status: number = 400;
+  status = 400;
 
   constructor(message: string) {
     super(IdInvalidException.getMessage(message));
-    this.name = "IdInvalidException";
+    this.name = 'IdInvalidException';
   }
 
   static getMessage(message: string) {

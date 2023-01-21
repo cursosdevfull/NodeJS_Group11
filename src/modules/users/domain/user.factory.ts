@@ -19,25 +19,25 @@ export class UserFactory {
     roles: number[]
   ): UserResult {
     if (roles.length === 0) {
-      return err(new Error("Roles are required"));
+      return err(new Error('Roles are required'));
     }
 
     for (const role of roles) {
       if (role < 1) {
-        return err(new Error("Role is invalid"));
+        return err(new Error('Role is invalid'));
       }
     }
 
     if (name.length < 3) {
-      return err(new Error("Name is too short"));
+      return err(new Error('Name is too short'));
     }
 
     if (password.length < 6) {
-      return err(new Error("Password is too short"));
+      return err(new Error('Password is too short'));
     }
 
     if (email.trim().length === 0) {
-      return err(new Error("Email is required"));
+      return err(new Error('Email is required'));
     }
 
     const emailResult = EmailVO.create(email);

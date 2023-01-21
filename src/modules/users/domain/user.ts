@@ -26,17 +26,17 @@ export type UserUpdateProperties = {
 };
 
 export class User {
-  public readonly id: string;
-  public name: string;
-  public lastname: string;
-  public email: string;
-  public password: string;
-  public roles: number[] | unknown[];
-  public active: boolean;
-  public readonly createdAt: Date;
-  public updatedAt: Date | null;
-  public deletedAt: Date | null;
-  public refreshToken: string;
+  readonly id: string;
+  name: string;
+  lastname: string;
+  email: string;
+  password: string;
+  roles: number[] | unknown[];
+  active: boolean;
+  readonly createdAt: Date;
+  updatedAt: Date | null;
+  deletedAt: Date | null;
+  refreshToken: string;
 
   constructor(properties: UserProperties) {
     this.active = true;

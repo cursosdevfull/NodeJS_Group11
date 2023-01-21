@@ -11,23 +11,39 @@ export interface IDbConfig {
   logging: boolean;
 }
 
+export interface IDBRedisConfig {
+  host: string;
+  port: number;
+  password: string;
+  maxRetriesPerRequest: number;
+}
+
 export class AppService {
   private static readonly env = yenv();
 
-  public static get PORT(): number {
+  static get PORT(): number {
     return this.env.PORT;
   }
 
-  public static get DB_CONFIG(): IDbConfig {
+  static get DB_CONFIG(): IDbConfig {
     return {
       host: this.env.DB_HOST,
       port: this.env.DB_PORT,
       entities: [this.env.DB_ENTITIES],
       username: this.env.DB_USER,
-      password: "" + this.env.DB_PASS,
+      password: '' + this.env.DB_PASS,
       database: this.env.DB_NAME,
       synchronize: this.env.DB_SYNC,
       logging: this.env.DB_LOGG,
+    };
+  }
+
+  static get DB_REDIS_CONFIG(): IDBRedisConfig {
+    return {
+      host: this.env.REDIS_HOST,
+      port: this.env.REDIS_PORT,
+      password: '' + this.env.REDIS_PASS,
+      maxRetriesPerRequest: this.env.REDIS_MAX_RETRIES_PER_REQUEST,
     };
   }
 }

@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   mysql-server:
@@ -10,11 +10,30 @@ services:
       - MYSQL_PASSWORD=12345
       - MYSQL_DATABASE=cursonodejs
     ports:
-      - "3306:3306"
+      - '3306:3306'
     networks:
       - net-dev
     volumes:
       - data-mysqs-nodejs11-vol:/var/lib/mysql
+
+  sonarqube:
+    image: sonarqube:8-community
+    container_name: sonarqube
+    ports:
+      - '9000:9000'
+      - '9092:9092'
+    networks:
+      - net-dev
+
+  redis:
+    image: redis:6.0.5-alpine
+    container_name: server-redis
+    command: redis-server --requirepass todovale
+    ports:
+      - '6380:6379'
+    restart: always
+    networks:
+      - net-dev
 
 networks:
   net-dev:

@@ -14,8 +14,8 @@ export class Validator {
       });
 
       return messagesError.flat();
-    } else {
-      return null;
     }
+
+    return null;
   }
 }

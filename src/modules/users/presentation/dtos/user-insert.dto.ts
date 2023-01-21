@@ -1,9 +1,16 @@
-import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export enum DocumentType {
-  DNI = "DNI",
-  RUC = "RUC",
-  CE = "CE",
+  DNI = 'DNI',
+  RUC = 'RUC',
+  CE = 'CE',
 }
 
 export class UserInsertDto {

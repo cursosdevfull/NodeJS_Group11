@@ -3,8 +3,6 @@ import { DataSource } from 'typeorm';
 import { AppService, IDbConfig } from '../core/services/app.service';
 import IBootstrap from './bootstrap.interface';
 
-//let appDataSource: DataSource;
-
 export default class DatabaseBootstrap implements IBootstrap {
   private static appDataSource: DataSource;
 
@@ -12,7 +10,7 @@ export default class DatabaseBootstrap implements IBootstrap {
     const dbConfig: IDbConfig = AppService.DB_CONFIG;
 
     const AppDataSource = new DataSource({
-      type: "mysql",
+      type: 'mysql',
       ...dbConfig,
       migrations: [],
       subscribers: [],

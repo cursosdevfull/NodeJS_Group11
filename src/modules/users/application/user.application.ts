@@ -108,7 +108,7 @@ export class UserApplication {
       properties.roles = rolesInstancesResult.value;
     }
 
-    console.log("properties.roles", properties.roles);
+    console.log('properties.roles', properties.roles);
     user.update(properties);
 
     const userResult = await this.repositoryUser.update(user);

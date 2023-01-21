@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { UserRepository } from '../../users/domain/user.repository';
 import { UserInfrastructure } from '../../users/infrastructure/user.infrastructure';
@@ -8,10 +8,6 @@ const userInfrastructure: UserRepository = new UserInfrastructure();
 const authApplication = new AuthApplication(userInfrastructure);
 
 class AuthController {
-  constructor() {
-    //this.login = this.login.bind(this);
-  }
-
   async login(request: Request, response: Response) {
     const { email, password } = request.body;
     const loginResult = await authApplication.login(email, password);
@@ -26,7 +22,7 @@ class AuthController {
     response.json(loginResult.value);
   }
 
-  async getNewAccessToken(req: Request, res: Response, next: NextFunction) {
+  async getNewAccessToken(req: Request, res: Response) {
     const { refreshToken } = req.body;
     const newAccessTokenResult = await authApplication.getNewAccessToken(
       refreshToken

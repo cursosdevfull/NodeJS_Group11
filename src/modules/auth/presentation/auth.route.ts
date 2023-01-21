@@ -1,6 +1,6 @@
 import express from 'express';
 
-import AuthController from './auth.controller';
+import AuthController from './AuthController';
 
 class Router {
   router: express.Router;
@@ -13,8 +13,8 @@ class Router {
   }
 
   mountRoutes(): void {
-    this.router.post("/login", this.controller.login);
-    this.router.post("/refresh-token", this.controller.getNewAccessToken);
+    this.router.post('/login', this.controller.login);
+    this.router.post('/refresh-token', this.controller.getNewAccessToken);
   }
 }
 

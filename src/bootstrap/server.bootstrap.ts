@@ -13,13 +13,13 @@ export default class implements IBootstrap {
 
       server
         .listen(AppService.PORT)
-        .on("listening", () => {
+        .on('listening', () => {
           console.log(`Server is listening on port ${AppService.PORT}`);
           resolve(`Server is listening on port ${AppService.PORT}`);
         })
-        .on("error", (error) => {
+        .on('error', (error) => {
           reject(error);
-          console.log("Server error", error);
+          console.log('Server error', error);
           process.exit(1);
         });
     });

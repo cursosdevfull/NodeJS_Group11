@@ -17,7 +17,7 @@ export class AuthService {
     const payload = {
       name: authDto.name,
       lastname: authDto.lastname,
-      roles: authDto.roles,
+      roles: authDto.roles.map((role) => role.name),
       iat: createAccessTokenDate.getTime(),
       exp: expireAccessTokenDate.getTime(),
     };

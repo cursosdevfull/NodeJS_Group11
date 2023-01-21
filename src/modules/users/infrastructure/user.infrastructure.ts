@@ -1,6 +1,6 @@
 import { err, ok, Result } from 'neverthrow';
 
-import DatabaseBootstrap from '../../../bootstrap/database.bootstrap';
+import DatabaseBootstrap from '../../../bootstrap/DatabaseBootstrap';
 import { AuthApplicationDto } from '../../auth/application/dtos/auth.dto';
 import { UserInsertResultApp } from '../application/results/user-insert.result';
 import { UserListResultAppPaging } from '../application/results/user-list-paging.result';

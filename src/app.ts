@@ -18,8 +18,8 @@ class App {
   }
 
   mountRoutes(): void {
-    this.app.use("/users", RouterUsers);
-    this.app.use("/auth", RouterAuth);
+    this.app.use('/users', RouterUsers);
+    this.app.use('/auth', RouterAuth);
   }
 }
 

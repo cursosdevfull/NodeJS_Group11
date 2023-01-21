@@ -86,8 +86,8 @@ export class AuthApplication {
     }
 
     userResult.value.refreshToken = newRefreshToken;
-    console.log("newRefreshToken", newRefreshToken);
-    console.log("userResult.value", userResult.value);
+    console.log('newRefreshToken', newRefreshToken);
+    console.log('userResult.value', userResult.value);
     const accessToken = AuthService.generateAccessToken(userResult.value);
 
     return ok(new AuthTokens(accessToken, newRefreshToken));

@@ -9,7 +9,6 @@ import { UserEntity } from '../entities/user.entity';
 
 export class UserModelDto {
   static fromDomainToData(user: User): UserEntity {
-    //return plainToInstance(user, UserEntity);
     const userProperties: UserProperties = user.properties();
 
     const userEntity = new UserEntity();

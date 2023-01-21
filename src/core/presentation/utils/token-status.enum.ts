@@ -1,11 +1,11 @@
-export enum TokenStatus {
-  TOKEN_VALID = "TOKEN_VALID",
-  TOKEN_EXPIRED = "TOKEN_EXPIRED",
-  TOKEN_INVALID = "TOKEN_INVALID",
+export enum StatusToken {
+  TOKEN_VALID = 'TOKEN_VALID',
+  TOKEN_EXPIRED = 'TOKEN_EXPIRED',
+  TOKEN_INVALID = 'TOKEN_INVALID',
 }
 
-export interface TOKEN_STATUS {
+export interface TokenStatus {
   status: number;
-  message: TokenStatus;
+  message: StatusToken;
   payload?: any;
 }
