@@ -2,3 +2,5 @@ node_modules
 src
 mysql_data
 MyProject
+cache
+dist
