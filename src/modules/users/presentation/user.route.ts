@@ -33,8 +33,8 @@ class Router {
     );
     this.router.post(
       '/',
-      this.authentication.use,
-      this.authorization.build('ADMIN', 'MEDIC'),
+      //this.authentication.use,
+      //this.authorization.build('ADMIN', 'MEDIC'),
       this.controller.insert
     );
     this.router.get(
