@@ -17,7 +17,7 @@ phases:
       - aws s3 cp s3://cursonodejs11/dev/env.yaml env.yaml
       - npm install
       - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $RESPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
@@ -28,3 +28,4 @@ phases:
 
 artifacts:
   files:
+    - 'Dockerrun.aws.json'
