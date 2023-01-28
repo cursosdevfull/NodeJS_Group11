@@ -8,8 +8,15 @@ class App {
 
   constructor() {
     this.app = express();
+    this.healthCheck();
     this.middlewares();
     this.mountRoutes();
+  }
+
+  healthCheck(): void {
+    this.app.get('/', (req, res) => res.send("It's alive!"));
+    this.app.get('/healthcheck', (req, res) => res.send("It's alive!"));
+    this.app.get('/healthz', (req, res) => res.send("It's alive!"));
   }
 
   middlewares(): void {
