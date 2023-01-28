@@ -8,7 +8,7 @@ WORKDIR /build
 
 COPY package.json .
 
-RUN npm install --production
+RUN npm install
 
 COPY . .
 
@@ -29,6 +29,6 @@ COPY --from=builder /build/dist ./dist
 
 COPY --from=builder /build/package.json .
 
-COPY --from=builder /build/.env ./.env
+COPY --from=builder /build/env.yaml ./env.yaml
 
 CMD ["npm", "run", "start"]

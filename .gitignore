@@ -4,3 +4,4 @@ mysql_data
 MyProject
 .scannerwork
 dist
+env.yaml

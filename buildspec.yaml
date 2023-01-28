@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging into AWS ECR
+      - aws --version
+      - REPOSITORY_URI=282865065290.dkr.ecr.us-east-1.amazonaws.com/cursonodejs11
+      - aws ecr get-login-password | docker login --username AWS --password-stdin ${REPOSITORY_URI}
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the docker image
+      - aws s3 cp s3://cursonodejs11/dev/env.yaml env.yaml
+      - run install
+      - npm run test
+      - docker build -t $REPOSITORY_URI:latest
+      - docker tag $RESPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the docker image
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+
+artifacts:
+  files:

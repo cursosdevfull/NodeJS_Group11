@@ -4,3 +4,4 @@ dist
 MyProject
 node_modules
 reports
+docker-compose.yaml
