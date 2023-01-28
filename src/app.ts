@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 
 import RouterAuth from './modules/auth/presentation/auth.route';
 import RouterUsers from './modules/users/presentation/user.route';
@@ -8,9 +9,18 @@ class App {
 
   constructor() {
     this.app = express();
+    this.init();
     this.healthCheck();
     this.middlewares();
     this.mountRoutes();
+  }
+
+  init() {
+    multer({
+      limits: {
+        fileSize: 8000000,
+      },
+    });
   }
 
   healthCheck(): void {

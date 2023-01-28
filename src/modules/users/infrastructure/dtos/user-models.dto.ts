@@ -23,6 +23,7 @@ export class UserModelDto {
     userEntity.deletedAt = userProperties.deletedAt;
     userEntity.roles = userProperties.roles as RoleEntity[];
     userEntity.refreshToken = userProperties.refreshToken;
+    userEntity.photo = userProperties.photo;
 
     return userEntity;
   }
@@ -84,6 +85,7 @@ export class UserModelDto {
       createdAt: userEntity.createdAt,
       updatedAt: userEntity.updatedAt,
       deletedAt: userEntity.deletedAt,
+      photo: userEntity.photo,
     };
     return new User(properties);
   }

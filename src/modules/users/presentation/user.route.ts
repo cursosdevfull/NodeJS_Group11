@@ -4,6 +4,7 @@ import RedisBootstrap from '../../../bootstrap/RedisBootstrap';
 import { AuthenticationMiddleware } from '../../../core/presentation/middlewares/authentication.middleware';
 import { AuthorizationMiddleware } from '../../../core/presentation/middlewares/authorization.middleware';
 import { CacheMiddleware } from '../../../core/presentation/middlewares/cache.middleware';
+import { Upload, UploadBuilder } from '../../../core/presentation/middlewares/upload.middleware';
 import UserController from './UserController';
 
 class Router {
@@ -35,6 +36,15 @@ class Router {
       '/',
       //this.authentication.use,
       //this.authorization.build('ADMIN', 'MEDIC'),
+      Upload.save(
+        new UploadBuilder()
+          .addFieldName('photo')
+          .addMaxSize(5000000)
+          .addDestination('')
+          .addIsPublic(true)
+          .addAllowedMimeTypes(['image/jpeg', 'image/png'])
+          .build()
+      ),
       this.controller.insert
     );
     this.router.get(

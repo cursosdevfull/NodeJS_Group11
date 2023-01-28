@@ -16,7 +16,8 @@ export class UserFactory {
     lastname: string,
     email: string,
     password: string,
-    roles: number[]
+    roles: number[],
+    photo: string
   ): UserResult {
     if (roles.length === 0) {
       return err(new Error('Roles are required'));
@@ -46,6 +47,10 @@ export class UserFactory {
       return err(emailResult.error);
     }
 
+    if (photo === '') {
+      return err(new Error('Photo is required'));
+    }
+
     const properties: UserProperties = {
       id: uuidv4(),
       name,
@@ -54,6 +59,7 @@ export class UserFactory {
       password,
       roles,
       refreshToken: uuidv4(),
+      photo,
     };
 
     return ok(new User(properties));

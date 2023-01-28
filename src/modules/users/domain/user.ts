@@ -5,6 +5,7 @@ export interface UserEssentials {
   readonly email: string;
   readonly password: string;
   readonly roles: number[] | unknown[];
+  readonly photo: string;
 }
 
 export interface UserOptionals {
@@ -37,6 +38,7 @@ export class User {
   updatedAt: Date | null;
   deletedAt: Date | null;
   refreshToken: string;
+  photo: string;
 
   constructor(properties: UserProperties) {
     this.active = true;
@@ -57,6 +59,7 @@ export class User {
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
       refreshToken: this.refreshToken,
+      photo: this.photo,
     };
   }
 

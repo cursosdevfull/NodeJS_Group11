@@ -26,6 +26,9 @@ export class UserEntity extends BaseEntity {
   @Column('boolean')
   active: boolean;
 
+  @Column('varchar', { length: 100 })
+  photo: string;
+
   @ManyToMany(() => RoleEntity, (role) => role.users, { eager: true })
   @JoinTable()
   roles: RoleEntity[];

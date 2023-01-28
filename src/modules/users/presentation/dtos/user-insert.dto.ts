@@ -1,11 +1,4 @@
-import {
-  IsArray,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-  Length,
-} from 'class-validator';
+import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export enum DocumentType {
   DNI = 'DNI',
@@ -32,6 +25,10 @@ export class UserInsertDto {
   @IsNotEmpty()
   @Length(7)
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  photo: string;
 
   @IsArray()
   roles: number[];

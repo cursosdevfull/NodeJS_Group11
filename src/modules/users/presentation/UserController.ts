@@ -30,7 +30,7 @@ class UserController {
   }
 
   async insert(request: Request, response: Response) {
-    const { name, lastname, email, password, roles, documentType } =
+    const { name, lastname, email, password, roles, documentType, photo } =
       request.body;
 
     const userInsertDto = new UserInsertDto();
@@ -40,6 +40,7 @@ class UserController {
     userInsertDto.password = password;
     userInsertDto.roles = roles;
     userInsertDto.documentType = documentType;
+    userInsertDto.photo = photo;
 
     const errors = await Validator.use(userInsertDto);
     if (errors) {
@@ -51,7 +52,8 @@ class UserController {
       lastname,
       email,
       password,
-      roles
+      roles,
+      photo
     );
 
     if (userResult.isErr()) {
