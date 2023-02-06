@@ -26,6 +26,7 @@ export class AppService {
   }
 
   static get DB_CONFIG(): IDbConfig {
+    console.log('sync', this.env.DB_SYNC);
     return {
       host: this.env.DB_HOST,
       port: this.env.DB_PORT,

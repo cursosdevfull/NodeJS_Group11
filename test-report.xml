@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="D:\Cursos\NodeJS_Group11\test\integration\UserController.spec.ts">
+    <testCase name="UserController - Integration getAll" duration="22"/>
+    <testCase name="UserController - Integration getOne" duration="2"/>
+  </file>
+</testExecutions>

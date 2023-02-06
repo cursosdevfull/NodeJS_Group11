@@ -73,6 +73,7 @@ export class UserInfrastructure implements UserRepository {
 
       return ok(UserModelDto.fromDataToApplicationList(users));
     } catch (error) {
+      console.log(error);
       return err(new UserListException(error.message));
     }
   }
@@ -129,10 +130,14 @@ export class UserInfrastructure implements UserRepository {
 
   async getUserByEmail(email: string): Promise<UserByEmailResult> {
     try {
+      console.log('email: ', email);
       const repository = DatabaseBootstrap.dataSource.getRepository(UserEntity);
+      console.log('repository: ', repository);
       const user: UserEntity = await repository.findOne({
         where: { active: true, email },
       });
+      console.log('usr');
+      console.log('user: ', user);
 
       if (!user) {
         return err(new UserNotFoundException(email));
@@ -140,6 +145,7 @@ export class UserInfrastructure implements UserRepository {
 
       return ok(UserModelDto.fromDataToAuth(user));
     } catch (error) {
+      console.log(error);
       return err(new UserOneException(error.message));
     }
   }

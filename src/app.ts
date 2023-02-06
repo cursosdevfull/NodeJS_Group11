@@ -1,4 +1,6 @@
+import cors from 'cors';
 import express from 'express';
+import helmet from 'helmet';
 import multer from 'multer';
 
 import RouterAuth from './modules/auth/presentation/auth.route';
@@ -30,6 +32,11 @@ class App {
   }
 
   middlewares(): void {
+    const corsOptions = {
+      origin: ['http://localhost:4200', 'http://midominio.com'],
+    };
+    this.app.use(cors(corsOptions));
+    this.app.use(helmet());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }

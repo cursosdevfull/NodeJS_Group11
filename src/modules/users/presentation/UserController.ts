@@ -1,26 +1,18 @@
 import { Request, Response } from 'express';
-import { RoleRepository } from 'src/modules/roles/domain/role.repository';
 
 import RedisBootstrap from '../../../bootstrap/RedisBootstrap';
 import { Validator } from '../../../core/validators/validator';
-import { RoleInfrastructure } from '../../roles/infrastructure/role.infrastructure';
-import { UserApplication, UserInsertResultApplication } from '../application/user.application';
+import {
+  UserApplication,
+  UserInsertResultApplication,
+} from '../application/user.application';
 import { UserUpdateProperties } from '../domain/user';
 import { UserFactory, UserResult } from '../domain/user.factory';
-import { UserRepository } from '../domain/user.repository';
 import { IdVO } from '../domain/value-objects/id.vo';
-import { UserInfrastructure } from '../infrastructure/user.infrastructure';
 import { UserInsertDto } from './dtos/user-insert.dto';
 
-const userInfrastructure: UserRepository = new UserInfrastructure();
-const roleInfrastructure: RoleRepository = new RoleInfrastructure();
-const userApplication: UserApplication = new UserApplication(
-  userInfrastructure,
-  roleInfrastructure
-);
-
-class UserController {
-  constructor() {
+export class UserController {
+  constructor(private readonly userApplication: UserApplication) {
     this.getAll = this.getAll.bind(this);
     this.insert = this.insert.bind(this);
     this.getOne = this.getOne.bind(this);
@@ -64,8 +56,8 @@ class UserController {
     }
 
     const userInsertResult: UserInsertResultApplication =
-      await userApplication.insert(userResult.value);
-
+      await this.userApplication.insert(userResult.value);
+    console.log('userInsertResult', userInsertResult);
     if (userInsertResult.isErr()) {
       return response.status(userInsertResult.error.status).json({
         name: userInsertResult.error.name,
@@ -77,7 +69,7 @@ class UserController {
   }
 
   async getAll(request: Request, response: Response) {
-    const userResult = await userApplication.getAll();
+    const userResult = await this.userApplication.getAll();
 
     if (userResult.isErr()) {
       return response.status(userResult.error.status).json({
@@ -90,12 +82,13 @@ class UserController {
       response.locals.cacheKey,
       JSON.stringify(userResult.value)
     );
+    console.log('value', userResult.value);
     response.json(userResult.value);
   }
 
   async getByPage(request: Request, response: Response) {
     const { page, pageSize } = request.params;
-    const userResult = await userApplication.getByPage(+page, +pageSize);
+    const userResult = await this.userApplication.getByPage(+page, +pageSize);
 
     if (userResult.isErr()) {
       return response.status(userResult.error.status).json({
@@ -118,7 +111,9 @@ class UserController {
       });
     }
 
-    const userResult = await userApplication.getOne(idResult.value.getValue());
+    const userResult = await this.userApplication.getOne(
+      idResult.value.getValue()
+    );
 
     if (userResult.isErr()) {
       return response.status(userResult.error.status).json({
@@ -147,7 +142,7 @@ class UserController {
     }
     const body: Partial<UserUpdateProperties> = request.body;
 
-    const userGetOneResult = await userApplication.getOneWithPassword(
+    const userGetOneResult = await this.userApplication.getOneWithPassword(
       idResult.value.getValue()
     );
 
@@ -158,7 +153,7 @@ class UserController {
       });
     }
 
-    const userUpdateResult = await userApplication.update(
+    const userUpdateResult = await this.userApplication.update(
       userGetOneResult.value,
       body
     );
@@ -184,7 +179,7 @@ class UserController {
       });
     }
 
-    const userGetOneResult = await userApplication.getOneWithPassword(
+    const userGetOneResult = await this.userApplication.getOneWithPassword(
       idResult.value.getValue()
     );
 
@@ -195,7 +190,7 @@ class UserController {
       });
     }
 
-    const userUpdateResult = await userApplication.delete(
+    const userUpdateResult = await this.userApplication.delete(
       userGetOneResult.value
     );
 

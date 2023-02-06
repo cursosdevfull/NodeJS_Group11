@@ -1,0 +1,16 @@
+{
+  "id": "1b51538c-6087-4256-8e5f-ae89fbeea043",
+  "name": "Carmela",
+  "lastname": "Sotomayor",
+  "email": "carmela.sotomayor@email.com",
+  "roles": [
+    {
+      "id": "1",
+      "name": "Admin"
+    },
+    {
+      "id": "2",
+      "name": "User"
+    }
+  ]
+}

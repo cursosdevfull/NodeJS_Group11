@@ -45,6 +45,25 @@ services:
     networks:
       - net-dev
 
+  locust-master:
+    build:
+      context: .
+      dockerfile: locust/Dockerfile
+    container_name: locust-master
+    ports:
+      - '8089:8089'
+    command: '--host https://87d5-38-25-16-207.ngrok.io --master'
+    networks:
+      - net-dev
+
+  locust-slave:
+    build:
+      context: .
+      dockerfile: locust/Dockerfile
+    command: '--host https://87d5-38-25-16-207.ngrok.io --master-host=locust-master --slave'
+    networks:
+      - net-dev
+
 networks:
   net-dev:
     driver: bridge

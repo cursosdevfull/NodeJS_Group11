@@ -4,8 +4,19 @@ import RedisBootstrap from '../../../bootstrap/RedisBootstrap';
 import { AuthenticationMiddleware } from '../../../core/presentation/middlewares/authentication.middleware';
 import { AuthorizationMiddleware } from '../../../core/presentation/middlewares/authorization.middleware';
 import { CacheMiddleware } from '../../../core/presentation/middlewares/cache.middleware';
-import { Upload, UploadBuilder } from '../../../core/presentation/middlewares/upload.middleware';
+import { RoleRepository } from '../../roles/domain/role.repository';
+import { RoleInfrastructure } from '../../roles/infrastructure/role.infrastructure';
+import { UserApplication } from '../application/user.application';
+import { UserRepository } from '../domain/user.repository';
+import { UserInfrastructure } from '../infrastructure/user.infrastructure';
 import UserController from './UserController';
+
+const userInfrastructure: UserRepository = new UserInfrastructure();
+const roleInfrastructure: RoleRepository = new RoleInfrastructure();
+const userApplication: UserApplication = new UserApplication(
+  userInfrastructure,
+  roleInfrastructure
+);
 
 class Router {
   router: express.Router;
@@ -16,7 +27,7 @@ class Router {
 
   constructor() {
     this.router = express.Router();
-    this.controller = new UserController();
+    this.controller = new UserController(userApplication);
     this.authentication = new AuthenticationMiddleware();
     this.authorization = new AuthorizationMiddleware();
     this.cache = new CacheMiddleware();
@@ -36,7 +47,7 @@ class Router {
       '/',
       //this.authentication.use,
       //this.authorization.build('ADMIN', 'MEDIC'),
-      Upload.save(
+      /*       Upload.save(
         new UploadBuilder()
           .addFieldName('photo')
           .addMaxSize(5000000)
@@ -44,7 +55,7 @@ class Router {
           .addIsPublic(true)
           .addAllowedMimeTypes(['image/jpeg', 'image/png'])
           .build()
-      ),
+      ), */
       this.controller.insert
     );
     this.router.get(
