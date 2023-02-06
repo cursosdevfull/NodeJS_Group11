@@ -1,0 +1,1 @@
+- 2tsXhr=src/modules/roles/infrastructure/exceptions/role.exception.ts

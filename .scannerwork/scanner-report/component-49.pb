@@ -1,0 +1,1 @@
+1 2tsXhr;src/modules/users/application/results/user-insert.result.ts

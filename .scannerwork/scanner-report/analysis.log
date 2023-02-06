@@ -1,0 +1,38 @@
+SonarQube plugins:
+  - Python Code Quality and Security 3.4.1.8066 (python)
+  - CSS Code Quality and Security 1.4.2.2002 (cssfamily)
+  - Go Code Quality and Security 1.8.3.2219 (go)
+  - JaCoCo 1.1.1.1157 (jacoco)
+  - Kotlin Code Quality and Security 1.8.3.2219 (kotlin)
+  - JavaScript/TypeScript Code Quality and Security 7.4.4.15624 (javascript)
+  - Ruby Code Quality and Security 1.8.3.2219 (ruby)
+  - Scala Code Quality and Security 1.8.3.2219 (sonarscala)
+  - C# Code Quality and Security 8.22.0.31243 (csharp)
+  - Java Code Quality and Security 6.15.1.26025 (java)
+  - HTML Code Quality and Security 3.4.0.2754 (web)
+  - Flex Code Quality and Security 2.6.1.2564 (flex)
+  - XML Code Quality and Security 2.2.0.2973 (xml)
+  - PHP Code Quality and Security 3.17.0.7439 (php)
+  - VB.NET Code Quality and Security 8.22.0.31243 (vbnet)
+Global server settings:
+  - sonar.core.id=BF41A1F2-AYX5VYFAJU-plFZCwfih
+  - sonar.core.startTime=2023-02-04T16:51:40+0000
+  - sonar.forceAuthentication=true
+Project server settings:
+Project scanner properties:
+  - sonar.dynamicAnalysis=reuseReports
+  - sonar.exclusions=mysql_data/**/*,**/MyProject/**,**/reports/**,**/mysql_data/**,**/cache/**,**/node_modules/**,**/coverage/**,**/dist/**,**/public/**,**/test/**,**/tests/**,**/vendor/**,**/webpack.config.js
+  - sonar.host.url=http://localhost:9000
+  - sonar.javascript.lcov.reportPaths=reports/coverage/lcov.info
+  - sonar.log.level=DEBUG
+  - sonar.login=******
+  - sonar.projectBaseDir=D:\Cursos\NodeJS_Group11
+  - sonar.projectKey=Apx:cursonodejs
+  - sonar.projectName=cursonodejs
+  - sonar.scanner.app=ScannerCLI
+  - sonar.scanner.appVersion=4.6.2.2472
+  - sonar.sourceEncoding=windows-1252
+  - sonar.sources=.
+  - sonar.test.inclusions=**/*.spec.ts
+  - sonar.verbose=true
+  - sonar.working.directory=D:\Cursos\NodeJS_Group11\.scannerwork

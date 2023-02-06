@@ -1,0 +1,1 @@
+$ 2tsX$hr9src/modules/auth/application/exceptions/auth.exception.ts

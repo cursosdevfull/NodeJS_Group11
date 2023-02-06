@@ -1,0 +1,1 @@
+< 2tsXhr2src/modules/users/domain/value-objects/email.vo.ts

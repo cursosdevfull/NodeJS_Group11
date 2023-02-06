@@ -1,0 +1,1 @@
+, 2tsXhr8src/modules/roles/infrastructure/entities/role.entity.ts

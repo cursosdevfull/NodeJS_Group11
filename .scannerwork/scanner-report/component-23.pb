@@ -1,0 +1,1 @@
+ 2tsXhr-src/core/infrastructure/entity/base-entity.ts
